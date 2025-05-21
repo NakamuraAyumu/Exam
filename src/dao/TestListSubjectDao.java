@@ -22,7 +22,7 @@ public class TestListSubjectDao extends Dao{
 				TestListStudent tls = new TestListStudent();
 				//学生別リストインスタンスに検索結果をセット
 				tls.setSubjectName(rSet.getString("name"));
-				tls.setSbujectCd(rSet.getString("subject_cd"));
+				tls.setSubjectCd(rSet.getString("subject_cd"));
 				tls.setNum(rSet.getInt("no"));
 				tls.setPoint(rSet.getInt("point"));
 				//リストに追加
