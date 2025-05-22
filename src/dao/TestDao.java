@@ -37,6 +37,7 @@ public class TestDao extends Dao {
 		}
 		return list;
 	}
+
 	public List<Test>filter(int entYear, String classNum, Subject subject, int num, School school) throws Exception{
 		//リストを初期化
 		List<Test> list = new ArrayList<>();
@@ -49,7 +50,33 @@ public class TestDao extends Dao {
 		//SQL文の結合
 		String join = " JOIN student ON test.student_id = student.student_id;";
 		//SQL文の条件
-		String condition = " where stu.entyear = ? and test.classnum = ? and test.subject_name = ? and school.name = ?";
+		String condition = "select"+
+				"student.no as student_no,"
+				+"student.name,"
+				+"student.ent_year,"
+				+"student.class_num,"
+				+"student.is_attend,"
+				+"student.school_cd,"
+				+"test.subject_cd,"
+				+"test.no as count,"
+				+"test.point"
+				+"from student"
+				+"left join ("
+						+"select"
+						+"*"
+						+"from"
+						+"test"
+						+"where"
+						+"subject_cd = ? and"
+								+"no = ?"
+						+") as test on"
+				+"student.no = test.student_no"
+				+"where"
+				+"ent_year = ? and"
+						+"student.class_num = ? and"
+								+"student.school_cd = ?"
+										+"order by"
+										+"student.no asc";
 		//SQL文のソート
 		String order = " ordey by subject_cd asc, no asc";
 			try{
@@ -91,4 +118,5 @@ public class TestDao extends Dao {
 			}
 			return list;
 	}
+}
 }
