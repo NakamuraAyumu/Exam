@@ -17,4 +17,5 @@ public class ClassNum implements Serializable{
 	public void setSchool(School school) {
 		this.school = school;
 	}
+
 }
