@@ -6,13 +6,14 @@
   <c:param name="scripts"></c:param>
 
   <c:param name="content">
+
     <section>
       <h2>成績一覧（科目）</h2>
 
-      <h3>科目情報</h3>　
+      <h3>科目情報</h3>
 
  <!-- 入力フォーム -->
-       <form action="TestList.action" method="get">
+       <form action="TestListSubjectExecute.action" method="get">
        <label for="entYear">入学年度:</label>
 		<select id="entYear" name="entYear">
 		  <option value="">-- 入学年度を選択 --</option>
