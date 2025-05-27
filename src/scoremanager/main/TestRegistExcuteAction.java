@@ -28,14 +28,12 @@ public class TestRegistExcuteAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
         School school = teacher.getSchool();
 
-        // フォームからのパラメータ取得
         int entYear = Integer.parseInt(req.getParameter("ent_year"));
         String classNum = req.getParameter("class_num");
         String subjectCd = req.getParameter("subject");
         int count = Integer.parseInt(req.getParameter("count"));
         int studentCount = Integer.parseInt(req.getParameter("student_count"));
 
-        // DAO取得
         SubjectDao subjectDao = new SubjectDao();
         StudentDao studentDao = new StudentDao();
         TestDao testDao = new TestDao();
@@ -55,15 +53,19 @@ public class TestRegistExcuteAction extends Action {
             try {
                 point = Integer.parseInt(scoreStr);
             } catch (NumberFormatException e) {
-                point = 0; // 不正な数値は0点とする
+                point = 0;
             }
 
-            // Studentオブジェクト作成（NoだけでOK）
-            Student student = new Student();
-            student.setNo(studentNo);
+            // studentList を使って該当Studentを取得
+            Student student = studentList.stream()
+                .filter(s -> s.getNo().equals(studentNo))
+                .findFirst()
+                .orElse(null);
+
+            if (student == null) continue;
 
             Test test = new Test();
-            test.setStudent(student);
+            test.setStudent(student); // 詳細な学生情報あり
             test.setSubject(subject);
             test.setNo(count);
             test.setPoint(point);
@@ -71,11 +73,9 @@ public class TestRegistExcuteAction extends Action {
             testList.add(test);
         }
 
-        // DBに一括保存
-        Connection connection = testDao.getConnection(); // MySQL用の接続取得
+        Connection connection = testDao.getConnection();
         testDao.save(testList, connection);
 
-        // 完了後リダイレクト
         res.sendRedirect("testregist-complete.jsp");
     }
 }
