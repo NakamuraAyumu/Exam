@@ -45,5 +45,9 @@ public class Student implements Serializable {
 	public void setSchool(School school) {
 		this.school = school;
 	}
+	public void setIsAttend(boolean boolean1) {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
 
 }
