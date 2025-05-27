@@ -8,7 +8,7 @@
   <c:param name="content">
 
     <section>
-      <h2>成績一覧（科目）</h2>
+      <h2>成績一覧（科目)</h2>
 
       <h3>科目情報</h3>
 

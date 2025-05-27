@@ -40,13 +40,13 @@ public class TestListSubjectExecuteAction extends Action {
 
             // 得点リスト取得
             TestDao testDao = new TestDao();
-            List<Test> scoreList = testDao.filter(entYear, classNum, subject, 1, school); // 1は試験回数の例
+            List<Test> pointList = testDao.filter(entYear, classNum, subject, 1, school);
 
             // 表示用の科目名
             req.setAttribute("subjectName", subject.getName());
 
             // 成績リストをセット
-            req.setAttribute("scoreList", scoreList);
+            req.setAttribute("pointList", pointList);
         }
 
         // 画面に遷移
