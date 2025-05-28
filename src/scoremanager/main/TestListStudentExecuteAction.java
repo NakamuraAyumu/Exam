@@ -24,6 +24,7 @@ public class TestListStudentExecuteAction {
 			///学校コード
 			String school_cd = req.getParameter("SCHOOL_CD");
 
+
             // JSPに渡す
 			req.setAttribute("no", no);
 			req.setAttribute("name", name);
