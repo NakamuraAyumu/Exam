@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bean.Student;
+import bean.School;
+import bean.Subject;
 import bean.TestListStudent;
 
 public class TestListSubjectDao extends Dao{
@@ -33,7 +34,7 @@ public class TestListSubjectDao extends Dao{
 		}
 		return list;
 	}
-	public List<TestListStudent>filter(Student student)throws Exception {
+	public List<TestListStudent>filter(int entYear, String classnum, Subject subject, School school )throws Exception {
 		//リストを初期化
 		List<TestListStudent> list = new ArrayList<>();
 		//コネクションを確立
