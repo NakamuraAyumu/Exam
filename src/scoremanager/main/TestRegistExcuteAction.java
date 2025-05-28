@@ -76,6 +76,6 @@ public class TestRegistExcuteAction extends Action {
         Connection connection = testDao.getConnection();
         testDao.save(testList, connection);
 
-        res.sendRedirect("testregist-complete.jsp");
+        res.sendRedirect("test_regist_done.jsp");
     }
 }
