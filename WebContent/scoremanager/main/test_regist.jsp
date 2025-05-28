@@ -24,8 +24,8 @@
 				<label>科目</label>
 				<select name="f3">
 				<option value="0">--------</option>
-				<c:forEach var="subject" items="${subject_set}">
-						<option value="${subject }"<c:if test="${subject==f3 }">selected</c:if>>${subject }</option></c:forEach>
+				<c:forEach var="s" items="${subject_set}">
+						<option value="${s.subject }"<c:if test="${s.subject==f3 }">selected</c:if>>${s.subjectName }</option></c:forEach>
 				</select>
 
 				<label>回数</label>

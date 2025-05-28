@@ -53,7 +53,7 @@ public class TestRegistAction extends Action {
         // クラス番号リスト取得
         List<String> classNumList = classNumDao.filter(teacher.getSchool());
 
-        // 科目一覧を取得
+        // 科目一覧を取得（←ここで Subject オブジェクトのリストを取得）
         List<Subject> subjectList = subjectDao.filter(teacher.getSchool());
 
         // 入学年度の入力がある場合はintに変換
@@ -85,7 +85,7 @@ public class TestRegistAction extends Action {
         req.setAttribute("students", students);
         req.setAttribute("class_num_set", classNumList);
         req.setAttribute("ent_year_set", entYearSet);
-        req.setAttribute("subject_set", subjectList);
+        req.setAttribute("subject_set", subjectList); // ← Subjectリストをセット
         req.setAttribute("count_set", count);
         req.setAttribute("errors", errors);
 
