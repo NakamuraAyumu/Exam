@@ -37,7 +37,6 @@
 
 				<a href="test_regist.action">検索</a>
 			</div>
-
 		</form>
 	</body>
 </html>
