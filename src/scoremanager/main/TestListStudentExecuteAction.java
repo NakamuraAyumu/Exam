@@ -33,6 +33,7 @@ public class TestListStudentExecuteAction {
 			req.setAttribute("is_attend", is_attend);
 			req.setAttribute("school_cd", school_cd);
 
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new ServletException("一覧の取得に失敗しました", e);
