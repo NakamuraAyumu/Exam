@@ -94,7 +94,7 @@ public class TestRegistAction extends Action {
 		//回数をセット
 		req.setAttribute("f4", countstr);
 		//JSPへフォワード７
-		req.getRequestDispatcher("testregist.jsp").forward(req,res);
+		req.getRequestDispatcher("test_regist.jsp").forward(req,res);
 
 	}
 
