@@ -90,4 +90,8 @@ public class TestListSubject implements Serializable {
 		//pointsフィールドにセット
 		setPoints(map);
 	}
+	public void setSubjectCd(String string) {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
 }

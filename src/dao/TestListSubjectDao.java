@@ -9,77 +9,66 @@ import java.util.List;
 
 import bean.School;
 import bean.Subject;
-import bean.TestListStudent;
+import bean.TestListSubject;
 
-public class TestListSubjectDao extends Dao{
-	private String baseSql = "select subject.name, test.subject_cd, test.no,test.point from test";
-	private List<TestListStudent>postFilter(ResultSet rSet)throws Exception{
-		//リストの初期化
-		List<TestListStudent> list = new ArrayList<>();
-		try {
-			//リザルトセットを全権走査
-			while (rSet.next()){
-				//学生別リストインスタンスを初期化
-				TestListStudent tls = new TestListStudent();
-				//学生別リストインスタンスに検索結果をセット
-				tls.setSubjectName(rSet.getString("name"));
-				tls.setSubjectCd(rSet.getString("subject_cd"));
-				tls.setNum(rSet.getInt("no"));
-				tls.setPoint(rSet.getInt("point"));
-				//リストに追加
-				list.add(tls);
-			}
-		} catch (SQLException | NullPointerException e){
-			e.printStackTrace();
-		}
-		return list;
-	}
-	public List<TestListStudent>filter(int entYear, String classnum, Subject subject, School school )throws Exception {
-		//リストを初期化
-		List<TestListStudent> list = new ArrayList<>();
-		//コネクションを確立
-		Connection connection = getConnection();
-		//プリペアードステートメント
-		PreparedStatement statement = null;
-		//リザルトセット
-		ResultSet rSet = null;
-		//SQL文の結合
-		String join = "join subject on test.subject_cd = subject.cd";
-		//SQL文の条件
-		String condition = "where test.student_no = ? and test.school_cd = ?";
-		//SQL文のソート
-		String order = " order by subject_cd asc, no asc";
-			try{
-				//プリペアードステートメントにSQL文をセット
-				statement = connection.prepareStatement(baseSql + join + condition + order);
-				//プリペアードステートメントに学生番号をバインド
-				statement.setString(1, student.getNo());
-				//プリペアードステートメントに学校コードバインド
-				statement.setString(2, student.getSchool().getCd());
-				//プリペアードステートメントを実行
-				rSet = statement.executeQuery();
-				//リストへの格納処理を実行
-				list = postFilter(rSet);
-			} catch (Exception e) {
-				throw e;
-			}finally {
-				//プリペアードステートメントを閉じる
-				if(statement != null){
-					try{
-						statement.close();
-					} catch (SQLException sqle){
-						throw sqle;
-					}
-				}
-				//コネクションを閉じる
-				if (connection != null){
-					try{
-						connection.close();
-					} catch(SQLException sqle){
-						throw sqle;
-					}
-				}
-			}
-			return list;
-	}
+public class TestListSubjectDao extends Dao {
+
+    // SQL-ийн үндсэн select хэсэг
+    private String baseSql =
+        "SELECT s.name, t.subject_cd, t.no, t.point, st.no AS student_no, st.name AS student_name, st.ent_year, st.class_num " +
+        "FROM test t " +
+        "JOIN subject s ON t.subject_cd = s.cd " +
+        "JOIN student st ON t.student_no = st.no ";
+
+    // ResultSet-ээс жагсаалт гаргах метод
+    private List<TestListSubject> postFilter(ResultSet rSet) throws Exception {
+        List<TestListSubject> list = new ArrayList<>();
+        try {
+            while (rSet.next()) {
+                TestListSubject tls = new TestListSubject();
+                tls.setEntYear(rSet.getInt("ent_year"));
+                tls.setStudentNo(rSet.getString("student_no"));
+                tls.setStudentName(rSet.getString("student_name"));
+                tls.setClassNum(rSet.getString("class_num"));
+                tls.setSubjectCd(rSet.getString("subject_cd"));
+                tls.setSubjectCd(rSet.getString("name"));
+                tls.getPoint(rSet.getInt("point"));
+                list.add(tls);
+            }
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Филтер хийх гол метод
+    public List<TestListSubject> filter(int entYear, String classNum, Subject subject, School school) throws Exception {
+        List<TestListSubject> list = new ArrayList<>();
+        Connection connection = getConnection();
+        PreparedStatement statement = null;
+        ResultSet rSet = null;
+
+        String condition =
+            "WHERE t.school_cd = ? AND t.subject_cd = ? AND st.ent_year = ? AND st.class_num = ? " +
+            "ORDER BY t.subject_cd ASC, t.no ASC";
+
+        try {
+            statement = connection.prepareStatement(baseSql + condition);
+            statement.setString(1, school.getCd());
+            statement.setString(2, subject.getCd());
+            statement.setInt(3, entYear);
+            statement.setString(4, classNum);
+
+            rSet = statement.executeQuery();
+            list = postFilter(rSet);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (rSet != null) try { rSet.close(); } catch (SQLException ignore) {}
+            if (statement != null) try { statement.close(); } catch (SQLException ignore) {}
+            if (connection != null) try { connection.close(); } catch (SQLException ignore) {}
+        }
+
+        return list;
+    }
 }
