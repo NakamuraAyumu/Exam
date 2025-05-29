@@ -154,9 +154,4 @@ public class TestDao extends Dao {
             return connection;
         }
     }
-
-    // DB接続設定
-    private static final String URL = "jdbc:mysql://localhost:3306/score_db?useSSL=false&characterEncoding=utf8";
-    private static final String USER = "root";
-    private static final String PASSWORD = "your_password";
 }
