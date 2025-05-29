@@ -96,14 +96,17 @@ public class TestDao extends Dao {
      * テスト情報を一括で登録するメソッド
      */
  // TestSaveRequest を使うように変更
-    public void save(TestSaveRequest request) throws Exception {
+    public void save(List<Test> testList) throws Exception {
         PreparedStatement statement = null;
+        Connection connection = null;
         String sql = "INSERT INTO test (student_id, subject_cd, no, point) VALUES (?, ?, ?, ?)";
 
         try {
-            statement = request.getConnection().prepareStatement(sql);
+            // DAOの共通メソッドで接続取得
+            connection = getConnection();
+            statement = connection.prepareStatement(sql);
 
-            for (Test test : request.getTestList()) {
+            for (Test test : testList) {
                 statement.setString(1, test.getStudent().getNo());
                 statement.setString(2, test.getSubject().getCd());
                 statement.setInt(3, test.getNo());
@@ -115,9 +118,10 @@ public class TestDao extends Dao {
 
         } finally {
             if (statement != null) statement.close();
-            if (request.getConnection() != null) request.getConnection().close();
+            if (connection != null) connection.close();
         }
     }
+
 
  // データベース接続情報（環境に応じて変更してください）
     private static final String URL = "jdbc:mysql://localhost:3306/score_db?useSSL=false&characterEncoding=utf8";
