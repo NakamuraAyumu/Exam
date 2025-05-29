@@ -12,7 +12,6 @@ import bean.School;
 import bean.Student;
 import bean.Subject;
 import bean.Test;
-import bean.TestSaveRequest;
 
 public class TestDao extends Dao {
 
@@ -130,13 +129,34 @@ public class TestDao extends Dao {
      */
     public Connection getConnection() throws SQLException {
         try {
-            // JDBCドライバをロード（MySQL用）
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new SQLException("JDBCドライバのロードに失敗しました。", e);
         }
-
-        // 接続を返す
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
+
+    // 内部クラスとしてTestSaveRequestを定義（これが混ぜ込んだ部分）
+    public static class TestSaveRequest {
+        private List<Test> testList;
+        private Connection connection;
+
+        public TestSaveRequest(List<Test> testList, Connection connection) {
+            this.testList = testList;
+            this.connection = connection;
+        }
+
+        public List<Test> getTestList() {
+            return testList;
+        }
+
+        public Connection getConnection() {
+            return connection;
+        }
+    }
+
+    // DB接続設定
+    private static final String URL = "jdbc:mysql://localhost:3306/score_db?useSSL=false&characterEncoding=utf8";
+    private static final String USER = "root";
+    private static final String PASSWORD = "your_password";
 }
