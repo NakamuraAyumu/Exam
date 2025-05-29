@@ -24,7 +24,7 @@ public class TestRegistAction extends Action {
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
 
-        // 入力値
+        // 入力値取得
         String entYearStr = req.getParameter("f1");
         String classNum = req.getParameter("f2");
         String subject = req.getParameter("f3");
@@ -39,7 +39,7 @@ public class TestRegistAction extends Action {
         LocalDate today = LocalDate.now();
         int currentYear = today.getYear();
 
-        // 入学年度リスト生成（過去10年～現在まで）
+        // 入学年度リスト作成（過去10年）
         List<Integer> entYearSet = new ArrayList<>();
         for (int i = currentYear - 10; i <= currentYear; i++) {
             entYearSet.add(i);
@@ -50,13 +50,10 @@ public class TestRegistAction extends Action {
         ClassNumDao classNumDao = new ClassNumDao();
         SubjectDao subjectDao = new SubjectDao();
 
-        // クラス番号リスト取得
         List<String> classNumList = classNumDao.filter(teacher.getSchool());
-
-        // 科目一覧を取得（←ここで Subject オブジェクトのリストを取得）
         List<Subject> subjectList = subjectDao.filter(teacher.getSchool());
 
-        // 入学年度の入力がある場合はintに変換
+        // 入学年度バリデーション
         if (entYearStr != null && !entYearStr.isEmpty()) {
             try {
                 entYear = Integer.parseInt(entYearStr);
@@ -65,19 +62,19 @@ public class TestRegistAction extends Action {
             }
         }
 
-        // 学生データの取得条件分岐
+        // 学生データ取得
         if (entYear != 0 && classNum != null && !classNum.equals("0")) {
             students = studentDao.filter(teacher.getSchool(), entYear, classNum, true);
-        } else if (entYear != 0 && (classNum == null || classNum.equals("0"))) {
+        } else if (entYear != 0) {
             students = studentDao.filter(teacher.getSchool(), entYear, true);
-        } else if (entYear == 0 && (classNum == null || classNum.equals("0"))) {
-            students = studentDao.filter(teacher.getSchool(), true);
         } else {
-            errors.put("class_without_year", "クラスを指定する場合は入学年度も指定してください");
+            if (classNum != null && !classNum.equals("0")) {
+                errors.put("class_without_year", "クラスを指定する場合は入学年度も指定してください");
+            }
             students = studentDao.filter(teacher.getSchool(), true);
         }
 
-        // リクエスト属性へセット
+        // 画面に渡す
         req.setAttribute("f1", entYearStr);
         req.setAttribute("f2", classNum);
         req.setAttribute("f3", subject);
@@ -85,11 +82,10 @@ public class TestRegistAction extends Action {
         req.setAttribute("students", students);
         req.setAttribute("class_num_set", classNumList);
         req.setAttribute("ent_year_set", entYearSet);
-        req.setAttribute("subject_set", subjectList); // ← Subjectリストをセット
+        req.setAttribute("subject_set", subjectList);
         req.setAttribute("count_set", count);
         req.setAttribute("errors", errors);
 
-        // JSPへフォワード
         req.getRequestDispatcher("test_regist.jsp").forward(req, res);
     }
 }
