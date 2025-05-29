@@ -18,7 +18,7 @@ import dao.SubjectDao;
 import dao.TestDao;
 import tool.Action;
 
-public class TestRegistExcuteAction extends Action {
+public class TestRegistExecuteAction extends Action {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
