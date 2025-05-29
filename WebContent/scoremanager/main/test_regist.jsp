@@ -35,7 +35,8 @@
 						<option value="${count }"<c:if test="${count==f4 }">selected</c:if>>${count }</option></c:forEach>
 				</select>
 
-				<a href="test_regist.action">検索</a>
+				<button onclick="location.href='test_list.jsp'">検索</button>
+
 			</div>
 		</form>
 	</body>
