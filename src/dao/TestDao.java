@@ -95,11 +95,15 @@ public class TestDao extends Dao {
     /**
      * テスト情報を一括で登録するメソッド
      */
-    public void save(List<Test> testList, Connection connection) throws Exception {
+ // TestSaveRequest を使うように変更
+    public void save(List<Test> testList) throws Exception {
         PreparedStatement statement = null;
+        Connection connection = null;
         String sql = "INSERT INTO test (student_id, subject_cd, no, point) VALUES (?, ?, ?, ?)";
 
         try {
+            // DAOの共通メソッドで接続取得
+            connection = getConnection();
             statement = connection.prepareStatement(sql);
 
             for (Test test : testList) {
@@ -117,6 +121,8 @@ public class TestDao extends Dao {
             if (connection != null) connection.close();
         }
     }
+
+
  // データベース接続情報（環境に応じて変更してください）
     private static final String URL = "jdbc:mysql://localhost:3306/score_db?useSSL=false&characterEncoding=utf8";
     private static final String USER = "root"; // ユーザー名
@@ -127,13 +133,29 @@ public class TestDao extends Dao {
      */
     public Connection getConnection() throws SQLException {
         try {
-            // JDBCドライバをロード（MySQL用）
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new SQLException("JDBCドライバのロードに失敗しました。", e);
         }
-
-        // 接続を返す
         return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+
+    // 内部クラスとしてTestSaveRequestを定義（これが混ぜ込んだ部分）
+    public static class TestSaveRequest {
+        private List<Test> testList;
+        private Connection connection;
+
+        public TestSaveRequest(List<Test> testList, Connection connection) {
+            this.testList = testList;
+            this.connection = connection;
+        }
+
+        public List<Test> getTestList() {
+            return testList;
+        }
+
+        public Connection getConnection() {
+            return connection;
+        }
     }
 }

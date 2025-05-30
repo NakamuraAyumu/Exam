@@ -1,6 +1,5 @@
 package scoremanager.main;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import bean.School;
 import bean.Student;
-import bean.Subject;
-import bean.Teacher;
 import bean.Test;
-import dao.StudentDao;
-import dao.SubjectDao;
 import dao.TestDao;
 import tool.Action;
 
@@ -23,59 +18,51 @@ public class TestRegistExecuteAction extends Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
         req.setCharacterEncoding("UTF-8");
-
         HttpSession session = req.getSession();
-        Teacher teacher = (Teacher) session.getAttribute("user");
-        School school = teacher.getSchool();
+        session.getAttribute("user");
 
-        int entYear = Integer.parseInt(req.getParameter("ent_year"));
+        req.getParameter("ent_year");
         String classNum = req.getParameter("class_num");
-        String subjectCd = req.getParameter("subject");
-        int count = Integer.parseInt(req.getParameter("count"));
-        int studentCount = Integer.parseInt(req.getParameter("student_count"));
-
-        SubjectDao subjectDao = new SubjectDao();
-        StudentDao studentDao = new StudentDao();
-        TestDao testDao = new TestDao();
-
-        Subject subject = subjectDao.get(subjectCd, school);
-        List<Student> studentList = studentDao.filter(school, entYear, classNum, true);
-
+        String subjectCd = req.getParameter("subject_cd");
+        String countStr = req.getParameter("count");
+        String cd = req.getParameter("school_cd");
+        String[] studentNos = req.getParameterValues("student_no");
+        String[] points = req.getParameterValues("point");
+        Student student = new Student();
+        School school = new School();
         List<Test> testList = new ArrayList<>();
+        int count = Integer.parseInt(countStr);
 
-        for (int i = 0; i < studentCount; i++) {
-            String studentNo = req.getParameter("student_id" + i);
-            String scoreStr = req.getParameter("score" + i);
+        TestDao dao = new TestDao();
 
-            if (studentNo == null || scoreStr == null || studentNo.isEmpty()) continue;
+        for (int i = 0; i < studentNos.length; i++) {
+            String studentNo = studentNos[i];
+            String pointStr = points[i];
 
-            int point;
+            if (pointStr == null || pointStr.isEmpty()) continue;
+
             try {
-                point = Integer.parseInt(scoreStr);
+                int point = Integer.parseInt(pointStr);
+
+                Test test = new Test();
+                student.setNo(studentNo);
+                student.setClassNum(classNum);
+                school.setCd(cd);
+                test.setStudent(student);
+                test.setClassNum(subjectCd);
+                test.setSchool(school);
+                test.setNo(count);
+                test.setPoint(point);
+                test.setClassNum(classNum);
+
+                testList.add(test);
+
             } catch (NumberFormatException e) {
-                point = 0;
+                // 入力ミス（文字など）はスキップ
+                continue;
             }
-
-            // studentList を使って該当Studentを取得
-            Student student = studentList.stream()
-                .filter(s -> s.getNo().equals(studentNo))
-                .findFirst()
-                .orElse(null);
-
-            if (student == null) continue;
-
-            Test test = new Test();
-            test.setStudent(student); // 詳細な学生情報あり
-            test.setSubject(subject);
-            test.setNo(count);
-            test.setPoint(point);
-
-            testList.add(test);
         }
-
-        Connection connection = testDao.getConnection();
-        testDao.save(testList, connection);
-
-        res.sendRedirect("test_regist_done.jsp");
+        dao.save(testList);
+        req.getRequestDispatcher("test_regist_result.jsp").forward(req, res);
     }
 }

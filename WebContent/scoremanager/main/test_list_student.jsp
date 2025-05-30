@@ -39,17 +39,17 @@
     </div>
 
     <div class="main-content">
-        <h2>① 成績参照</h2>
+        <h2> 成績参照</h2>
 
         <form action="gradeSearch.jsp" method="get">
             <div class="search-section">
-                <label for="NO">② 学生番号:</label>
+                <label for="NO"> 学生番号:</label>
                 <input type="text" id="NO" name="NO" value="<%= request.getParameter("NO") != null ? request.getParameter("NO") : "" %>"><br>
 
                 <label for="NAME">名前:</label>
                 <input type="text" id="NAME" name="NAME" value="<%= request.getParameter("NAME") != null ? request.getParameter("NAME") : "" %>"><br>
 
-                <label for="ENT_YEAR">③ 入学年度:</label>
+                <label for="ENT_YEAR"> 入学年度:</label>
                 <select id="ENT_YEAR" name="ENT_YEAR">
                     <option value="">---選択してください---</option>
                     <%
@@ -61,7 +61,7 @@
                     <% } %>
                 </select><br>
 
-                <label for="CLASS_NUM">④ クラス番号:</label>
+                <label for="CLASS_NUM"> クラス番号:</label>
                 <select id="CLASS_NUM" name="CLASS_NUM">
                     <option value="">---選択してください---</option>
                     <%
@@ -74,7 +74,7 @@
                     <% } %>
                 </select><br>
 
-                <label for="subject">⑤ 科目:</label>
+                <label for="subject"> 科目:</label>
                 <select id="subject" name="subject">
                     <option value="">---選択してください---</option>
                     <%
@@ -97,13 +97,13 @@
                 <label for="SCHOOL_CD">学校コード:</label>
                 <input type="text" id="SCHOOL_CD" name="SCHOOL_CD" value="<%= request.getParameter("SCHOOL_CD") != null ? request.getParameter("SCHOOL_CD") : "" %>"><br>
 
-                <button type="submit">⑨ 検索</button>
-                <button type="reset" onclick="window.location.href='gradeSearch.jsp';">⑮ クリア</button>
+                <button type="submit"> 検索</button>
+                <button type="reset" onclick="window.location.href='gradeSearch.jsp';"> クリア</button>
             </div>
         </form>
 
         <div class="student-info-section">
-            <h3>⑩ 学生情報</h3>
+            <h3> 学生情報</h3>
             <%
                 // パラメータの取得
                 String no = request.getParameter("NO");
@@ -172,7 +172,7 @@
                     rs = pstmt.executeQuery();
             %>
             <table>
-                <thead>
+                <thead>w
                     <tr>
                         <th>学生番号</th>
                         <th>名前</th>
