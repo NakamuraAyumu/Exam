@@ -98,7 +98,6 @@
           </c:forEach>
         </table>
       </c:if>
-
     </section>
 
   </c:param>
