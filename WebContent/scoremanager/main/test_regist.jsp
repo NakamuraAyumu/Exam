@@ -56,8 +56,8 @@
 							<td>${testitem.classNum }</td>
 							<td>${testitem.no }</td>
 							<td>${testitem.name }</td>
+							<td><input type="text" name="point_${test.student.no}" value="${test.point}" ></td>
 						</tr>
-						<input type="text" name="point_${test.student.no}" value="${test.point}" >
 						<c:if test = "point_${test.student.no} > 100 or point_${test.student.no} < 0" >
 						</c:if>
 					</c:forEach>
