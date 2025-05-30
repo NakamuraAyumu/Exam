@@ -35,12 +35,12 @@
 						<option value="${count }"<c:if test="${count==f4 }">selected</c:if>>${count }</option></c:forEach>
 				</select>
 
-				<button onclick="location.href='test_regist.action'">検索</button>
+				<button onclick="location.href='TestRegist.action'">検索</button>
 
 			</div>
 		</form>
 		<c:choose>
-		<c:when test="${test.size()>0 }">
+		<c:when test="${testlist.size()>0 }">
 			<form action="test_regist.jsp" method="get">
 				<table>
 					<tr>
@@ -50,12 +50,12 @@
 						<th>氏名</th>
 						<th>点数</th>
 					</tr>
-					<c:forEach var="test" items="${test }">
+					<c:forEach var="testitem" items="${testlist }">
 						<tr>
-							<th>${test.entYear }</th>
-							<td>${test.classNum }</td>
-							<td>${test.no }</td>
-							<td>${test.name }</td>
+							<th>${testitem.entYear }</th>
+							<td>${testitem.classNum }</td>
+							<td>${testitem.no }</td>
+							<td>${testitem.name }</td>
 						</tr>
 						<input type="text" name="point_${test.student.no}" value="${test.point}" >
 						<c:if test = "point_${test.student.no} > 100 or point_${test.student.no} < 0" >
