@@ -62,7 +62,7 @@
 						</c:if>
 					</c:forEach>
 				</table>
-				<p><input type="button" onclick="location.href='test_regist_done.jsp'" value="登録して終了"></p>
+				<p><input type="button" onclick="location.href='TestRegistExecuteAction.java'" value="登録して終了"></p>
 				<input type="hidden" name="regist" value="${test.student.no}">
 				<input type="hidden" name="count" value="${f4}">
 				<input type="hidden" name="subject" value="${f3}">
