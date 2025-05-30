@@ -10,7 +10,6 @@ public class TestListStudentExecuteAction {
 
     public void execute(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         try {
-            // パラメータ取得（nullチェック不要。JSP側で空文字チェックがあるので）
             String no = safeParam(req.getParameter("NO"));
             String name = safeParam(req.getParameter("NAME"));
             String ent_year = safeParam(req.getParameter("ENT_YEAR"));
@@ -35,4 +34,7 @@ public class TestListStudentExecuteAction {
     private String safeParam(String param) {
         return param == null ? "" : param;
     }
+
+
+
 }
