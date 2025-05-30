@@ -5,7 +5,7 @@
 		<title>得点管理システム</title>
 	</head>
 	<body>
-		<form action="TestRegistExecute.action" method="post">
+		<form action="TestRegist.action" method="get">
 			<div><h2>成績管理</h2></div>
 			<div><label>入学年度</label>
 				<select name="f1">
@@ -35,9 +35,40 @@
 						<option value="${count }"<c:if test="${count==f4 }">selected</c:if>>${count }</option></c:forEach>
 				</select>
 
-				<button onclick="location.href='test_list.jsp'">検索</button>
+				<button onclick="location.href='test_regist.action'">検索</button>
 
 			</div>
 		</form>
+		<c:choose>
+		<c:when test="${test.size()>0 }">
+			<form action="test_regist.jsp" method="get">
+				<table>
+					<tr>
+						<th>入学年度</th>
+						<th>クラス</th>
+						<th>学生番号</th>
+						<th>氏名</th>
+						<th>点数</th>
+					</tr>
+					<c:forEach var="test" items="${test }">
+						<tr>
+							<th>${test.entYear }</th>
+							<td>${test.classNum }</td>
+							<td>${test.no }</td>
+							<td>${test.name }</td>
+						</tr>
+						<input type="text" name="point_${test.student.no}" value="${test.point}" >
+						<c:if test = "point_${test.student.no} > 100 or point_${test.student.no} < 0" >
+						</c:if>
+					</c:forEach>
+				</table>
+				<p><input type="button" onclick="location.href='test_regist_done.jsp'" value="登録して終了"></p>
+				<input type="hidden" name="regist" value="${test.student.no}">
+				<input type="hidden" name="count" value="${f4}">
+				<input type="hidden" name="subject" value="${f3}">
+			</form>
+			</c:when>
+
+		</c:choose>
 	</body>
 </html>
