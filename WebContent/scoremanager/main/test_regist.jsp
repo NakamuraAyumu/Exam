@@ -41,7 +41,7 @@
 		</form>
 		<c:choose>
 		<c:when test="${testlist.size()>0 }">
-			<form action="test_regist.jsp" method="get">
+			<form action="TestRegistExecute.action" method="get">
 				<table>
 					<tr>
 						<th>入学年度</th>
@@ -62,8 +62,8 @@
 						</c:if>
 					</c:forEach>
 				</table>
-				<p><input type="button" onclick="location.href='TestRegistExecuteAction.java'" value="登録して終了"></p>
-				<input type="hidden" name="regist" value="${test.student.no}">
+				<p><input type="submit"  value="登録して終了"></p>
+				<input type="hidden" name="student_no" value="${test.student.no}">
 				<input type="hidden" name="count" value="${f4}">
 				<input type="hidden" name="subject" value="${f3}">
 			</form>
