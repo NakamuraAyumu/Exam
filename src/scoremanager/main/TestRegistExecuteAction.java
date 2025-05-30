@@ -63,6 +63,6 @@ public class TestRegistExecuteAction extends Action {
             }
         }
         dao.save(testList);
-        req.getRequestDispatcher("test_regist_result.jsp").forward(req, res);
+        req.getRequestDispatcher("test_regist_done.jsp").forward(req, res);
     }
 }
