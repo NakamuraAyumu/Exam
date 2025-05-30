@@ -32,8 +32,9 @@ public class TestRegistAction extends Action {
 
         int entYear = 0;
         int[] count = {1, 2, 3};
-        List<Student> students = null;
+        List<Student> students = new ArrayList<>();
         Map<String, String> errors = new HashMap<>();
+
 
         // 現在の年
         LocalDate today = LocalDate.now();
@@ -71,7 +72,7 @@ public class TestRegistAction extends Action {
             if (classNum != null && !classNum.equals("0")) {
                 errors.put("class_without_year", "クラスを指定する場合は入学年度も指定してください");
             }
-            students = studentDao.filter(teacher.getSchool(), true);
+
         }
 
         // 画面に渡す
@@ -85,7 +86,7 @@ public class TestRegistAction extends Action {
         req.setAttribute("subject_set", subjectList);
         req.setAttribute("count_set", count);
         req.setAttribute("errors", errors);
-
+        req.setAttribute("testlist", students);
         req.getRequestDispatcher("test_regist.jsp").forward(req, res);
     }
 }
